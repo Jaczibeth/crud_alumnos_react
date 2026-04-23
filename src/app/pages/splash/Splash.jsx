@@ -13,10 +13,8 @@ const Splash = ({ alTerminar }) => {
       try {
         console.log("Cargando componentes del sistema...");
         
-        // Tiempo de espera de 5 segundos antes de empezar a salir
         setTimeout(() => {
           setSaliendo(true);
-          // Tiempo para que termine la animación de desvanecimiento
           setTimeout(alTerminar, 1000);
         }, 5000);
 
