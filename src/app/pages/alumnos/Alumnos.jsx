@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ButtonRegister from '../../shared/components/botones/botones';
 import Menu from '../../shared/components/menu/Menu';
-import Swal from 'sweetalert2';
-import { validarControl } from '../../core/utils/validacionesAlumno';
+import { useAlumnoForm } from '../../core/hooks/useAlumnoForm';
 import './alumnos.css';
 
 const Alumnos = () => {
-    const [formData, setFormData] = useState({
+    const { formData, handleChange, handleSave, isValid } = useAlumnoForm({
         nombre: '',
         apellidos: '',
         carrera: '',
@@ -15,31 +14,6 @@ const Alumnos = () => {
         email: '',
         urlFoto: ''
     });
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        if (name === 'telefono') {
-            const val = value.replace(/\D/g, '').slice(0, 10);
-            setFormData({ ...formData, [name]: val });
-            return;
-        }
-        if (name === 'control') {
-            const val = value.replace(/\D/g, '').slice(0, 8);
-            setFormData({ ...formData, [name]: val });
-            return;
-        }
-        setFormData({ ...formData, [name]: value });
-    };
-
-    const handleSave = (e) => {
-        e.preventDefault();
-        Swal.fire({
-            title: '¡Registrado!',
-            text: 'Alumno registrado correctamente.',
-            icon: 'success',
-            confirmButtonColor: '#3b4cca'
-        });
-    };
 
     return (
         <div className="alumnos-app-layout">
@@ -59,23 +33,23 @@ const Alumnos = () => {
 
                     <div className="premium-form-body">
                         <form onSubmit={handleSave}>
-                            <div className="row g-4">
-                                <div className="col-12">
+                            <div className="row g-3">
+                                <div className="col-6">
                                     <label className="label-modern">
-                                        <i className="bi bi-person-fill"></i> Nombre completo *
+                                        <i className="bi bi-person-fill"></i> Nombre *
                                     </label>
                                     <input
                                         type="text"
                                         name="nombre"
                                         className="input-modern"
-                                        placeholder="Ej: Juan Carlos Pérez"
+                                        placeholder="Ej: Juan Carlos"
                                         value={formData.nombre}
                                         onChange={handleChange}
                                         required
                                     />
                                 </div>
 
-                                <div className="col-12">
+                                <div className="col-6">
                                     <label className="label-modern">
                                         <i className="bi bi-person-vcard-fill"></i> Apellidos *
                                     </label>
@@ -83,14 +57,14 @@ const Alumnos = () => {
                                         type="text"
                                         name="apellidos"
                                         className="input-modern"
-                                        placeholder="Ej: González Ramírez"
+                                        placeholder="Ej: Pérez González"
                                         value={formData.apellidos}
                                         onChange={handleChange}
                                         required
                                     />
                                 </div>
 
-                                <div className="col-12">
+                                <div className="col-6">
                                     <label className="label-modern">
                                         <i className="bi bi-mortarboard-fill"></i> Carrera *
                                     </label>
@@ -136,10 +110,9 @@ const Alumnos = () => {
                                         onChange={handleChange}
                                         required
                                     />
-                                    <small className="hint-modern">10 dígitos (953...)</small>
                                 </div>
 
-                                <div className="col-12">
+                                <div className="col-6">
                                     <label className="label-modern">
                                         <i className="bi bi-envelope-fill"></i> Email *
                                     </label>
@@ -155,25 +128,42 @@ const Alumnos = () => {
                                 </div>
 
                                 <div className="col-12">
-                                    <label className="label-modern">
-                                        <i className="bi bi-image-fill"></i> URL Fotografía
-                                    </label>
-                                    <input
-                                        type="url"
-                                        name="urlFoto"
-                                        className="input-modern"
-                                        placeholder="https://ejemplo.com/foto.jpg"
-                                        value={formData.urlFoto}
-                                        onChange={handleChange}
-                                    />
+                                    <div className="image-preview-wrapper">
+                                        <div className="flex-grow-1">
+                                            <label className="label-modern">
+                                                <i className="bi bi-image-fill"></i> URL Fotografía
+                                            </label>
+                                            <input
+                                                type="url"
+                                                name="urlFoto"
+                                                className="input-modern"
+                                                placeholder="https://ejemplo.com/foto.jpg"
+                                                value={formData.urlFoto}
+                                                onChange={handleChange}
+                                            />
+                                        </div>
+                                        <div className="image-preview-container">
+                                            {formData.urlFoto ? (
+                                                <img 
+                                                    src={formData.urlFoto} 
+                                                    alt="Preview" 
+                                                    onError={(e) => e.target.src = 'https://via.placeholder.com/60?text=Error'} 
+                                                />
+                                            ) : (
+                                                <div className="no-image-placeholder">
+                                                    <i className="bi bi-image"></i>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div className="footer-modern mt-5">
+                            <div className="footer-modern">
                                 <ButtonRegister 
                                     type="submit" 
                                     text="Registrar Alumno" 
-                                    disabled={!validarControl(formData.control)}
+                                    disabled={!isValid}
                                 />
                             </div>
                         </form>
