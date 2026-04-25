@@ -11,6 +11,7 @@ function App() {
         <Splash alTerminar={() => setMostrarSplash(false)} />
       ) : (
         <Alumnos />
+        
       )}
     </>
   );

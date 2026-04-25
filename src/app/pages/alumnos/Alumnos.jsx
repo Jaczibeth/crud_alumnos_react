@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ButtonRegister from '../../shared/components/botones/botones';
 import Menu from '../../shared/components/menu/Menu';
 import { useAlumnoForm } from '../../core/hooks/useAlumnoForm';
+import DocenteForm from '../docentes/DocenteForm';
+import MateriaForm from '../materias/MateriaForm';
 import './alumnos.css';
 
 const Alumnos = () => {
+    const [vista, setVista] = useState('alumnos');
     const { formData, handleChange, handleSave, isValid } = useAlumnoForm({
         nombre: '',
         apellidos: '',
@@ -17,21 +20,23 @@ const Alumnos = () => {
 
     return (
         <div className="alumnos-app-layout">
-            <Menu />
+            <Menu vista={vista} setVista={setVista} />
             
             <main className="alumnos-main-viewport">
                 <div className="inner-view-card">
-                    <header className="premium-form-header">
-                        <div className="premium-icon-circle">
-                            <i className="bi bi-person-plus-fill"></i>
-                        </div>
-                        <div className="premium-header-content">
-                            <h1>Registrar Alumno</h1>
-                            <p>Complete la información para dar de alta al estudiante</p>
-                        </div>
-                    </header>
+                    {vista === 'alumnos' && (
+                        <>
+                            <header className="premium-form-header">
+                                <div className="premium-icon-circle">
+                                    <i className="bi bi-person-plus-fill"></i>
+                                </div>
+                                <div className="premium-header-content">
+                                    <h1>Registrar Alumno</h1>
+                                    <p>Complete la información para dar de alta al estudiante</p>
+                                </div>
+                            </header>
 
-                    <div className="premium-form-body">
+                            <div className="premium-form-body">
                         <form onSubmit={handleSave}>
                             <div className="row g-3">
                                 <div className="col-6">
@@ -167,7 +172,11 @@ const Alumnos = () => {
                                 />
                             </div>
                         </form>
-                    </div>
+                            </div>
+                        </>
+                    )}
+                    {vista === 'docentes' && <DocenteForm />}
+                    {vista === 'materias' && <MateriaForm />}
                 </div>
             </main>
         </div>
