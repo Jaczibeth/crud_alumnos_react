@@ -20,6 +20,7 @@ import MateriaForm from '../materias/MateriaForm';
 import ListaAlumnos from './ListaAlumnos';
 import ListaDocentes from '../docentes/ListaDocentes';
 import ListaMaterias from '../materias/ListaMaterias';
+import Estadisticas from '../estadisticas/Estadisticas';
 
 import './alumnos.css';
 
@@ -232,6 +233,8 @@ const Alumnos = () => {
                     )}
                     {vista === 'lista-docentes' && <ListaDocentes />}
                     {vista === 'lista-materias' && <ListaMaterias />}
+
+                    {vista === 'estadisticas' && <Estadisticas />}
 
                 </div>
             </main>
