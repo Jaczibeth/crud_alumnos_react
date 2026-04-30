@@ -1,0 +1,51 @@
+.panel-periodos {
+    position: relative;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+    border: 1px solid #e0e0e0;
+    font-family: 'Inter', system-ui, sans-serif;
+}
+
+.panel-periodos-botones {
+    display: flex;
+    gap: 0.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.boton-periodo {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    background: transparent;
+    color: #555;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: color 0.3s ease, background-color 0.3s ease;
+    white-space: nowrap;
+}
+
+.boton-periodo:hover {
+    color: #3b4cca;
+    background-color: rgba(59, 76, 202, 0.1);
+}
+
+.boton-periodo.activo {
+    color: #3b4cca;
+    background-color: rgba(59, 76, 202, 0.15);
+}
+
+.indicador-linea {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3b4cca 0%, #5a6bff 100%);
+    border-radius: 4px;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 12px rgba(59, 76, 202, 0.8), 0 0 24px rgba(90, 107, 255, 0.5);
+}

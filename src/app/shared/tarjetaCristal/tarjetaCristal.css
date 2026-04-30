@@ -1,0 +1,30 @@
+.tarjeta-cristal {
+    position: relative;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: 1.5rem;
+    min-height: 180px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-family: 'Inter', system-ui, sans-serif;
+}
+
+.tarjeta-cristal-titulo {
+    position: absolute;
+    top: 1rem;
+    left: 1.5rem;
+}
+
+.tarjeta-cristal-titulo span {
+    font-size: 0.8rem;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.tarjeta-cristal-contenido {
+    margin-top: 1.5rem;
+}
