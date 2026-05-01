@@ -1,0 +1,76 @@
+.fila-estadistica {
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 12px;
+    padding: 0.8rem 1rem;
+    margin-bottom: 0.5rem;
+    font-family: 'Inter', system-ui, sans-serif;
+}
+
+.fila-estadistica:hover {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+.fila-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.fila-icono {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border-radius: 8px;
+    padding: 0.5rem;
+    min-width: 50px;
+}
+
+.fila-icono i {
+    font-size: 1.2rem;
+    color: #3b4cca;
+    margin-bottom: 0.2rem;
+}
+
+.fila-icono span {
+    font-size: 0.7rem;
+    color: #555;
+    font-weight: 500;
+}
+
+.fila-nombre {
+    flex: 1;
+}
+
+.badge-color {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.badge-naranja {
+    background-color: #ffeaa7;
+    color: #d63031;
+}
+
+.badge-verde {
+    background-color: #55efc4;
+    color: #00b894;
+}
+
+.badge-rosa {
+    background-color: #fab1a0;
+    color: #e17055;
+}
+
+.badge-morado {
+    background-color: #a29bfe;
+    color: #3d3d8c;
+}
+
+.badge-rosafuerte {
+    background-color: #fd79a8;
+    color: #8b2d4e;
+}
