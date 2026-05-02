@@ -52,7 +52,7 @@ const Menu = ({ vista, setVista }) => {
                     </li>
 
                     
-                    <li>
+                    <li className={vista === 'estadisticas' ? 'active' : ''} onClick={() => setVista && setVista('estadisticas')}>
                         <div className="nav-item-content">
                             <i className="bi bi-bar-chart-fill"></i>
                             <span>Estadisticas</span>
