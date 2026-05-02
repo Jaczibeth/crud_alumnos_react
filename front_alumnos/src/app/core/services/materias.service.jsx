@@ -1,56 +1,36 @@
-
-export const crearMateria = async (data) => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            console.log('Materia registrada:', data);
-            resolve({ success: true, data });
-        }, 800);
-    });
-};
-
-
-export const verificarClave = async (clave) => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(clave === '12345');
-        }, 400);
-    });
-};
-
+import api from './api';
 
 export const obtenerMaterias = async () => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve([
-                {
-                    id: 1,
-                    nombre: 'Matemáticas Discretas',
-                    clave: 'MAT-101',
-                    semestre: '3',
-                    docenteId: 'Prof. Juan Carlos Pérez'
-                },
-                {
-                    id: 2,
-                    nombre: 'Programación Orientada a Objetos',
-                    clave: 'ISW-201',
-                    semestre: '4',
-                    docenteId: 'Profa. María Elena González'
-                },
-                {
-                    id: 3,
-                    nombre: 'Bases de Datos',
-                    clave: 'ISW-301',
-                    semestre: '5',
-                    docenteId: 'Prof. Roberto Martínez'
-                },
-                {
-                    id: 4,
-                    nombre: 'Redes de Computadoras',
-                    clave: 'TIC-401',
-                    semestre: '6',
-                    docenteId: 'Profa. Laura Patricia Flores'
-                }
-            ]);
-        }, 600);
-    });
+    const response = await api.get('/materias/materias');
+    return response.data;
+};
+
+export const obtenerMateriaPorId = async (id) => {
+    const response = await api.get(`/materias/traer-materia/${id}`);
+    return response.data;
+};
+
+export const obtenerMateriasPorSemestre = async (semestreId) => {
+    const response = await api.get(`/materias/por-semestre/${semestreId}`);
+    return response.data;
+};
+
+export const crearMateria = async (data) => {
+    const response = await api.post('/materias/insertar-materia', data);
+    return response.data;
+};
+
+export const actualizarMateria = async (id, data) => {
+    const response = await api.put(`/materias/editar-materia/${id}`, data);
+    return response.data;
+};
+
+export const eliminarMateria = async (id) => {
+    const response = await api.delete(`/materias/eliminar-materia/${id}`);
+    return response.data;
+};
+
+export const verificarClave = async (clave) => {
+    const response = await api.get('/materias/materias');
+    return response.data.some((m) => m.clave === clave);
 };

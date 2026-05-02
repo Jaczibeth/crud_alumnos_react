@@ -107,3 +107,21 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+.input-error, .select-modern.input-error {
+  border-color: #b91c1c !important;
+  background-color: #fef2f2;
+}
+
+.input-error:focus {
+  border-color: #dc2626 !important;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+}
+
+.error-text {
+  display: block;
+  font-size: 0.72rem;
+  color: #b91c1c;
+  margin-top: 0.35rem;
+  text-align: left;
+}

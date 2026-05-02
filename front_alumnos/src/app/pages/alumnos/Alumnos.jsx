@@ -1,22 +1,13 @@
-// ============================================================
-// Alumnos.jsx
-// Capa 1 – Presentación: layout principal de la aplicación.
-// Usa useAlumnos() como fuente de verdad compartida y pasa
-// agregarAlumno al form y registros/eliminarAlumno a la tabla.
-// Sin lógica de negocio aquí.
-// ============================================================
-
 import React, { useState } from 'react';
+import Swal from 'sweetalert2';
 import Menu from '../../shared/components/menu/Menu';
 import ButtonRegister from '../../shared/components/botones/botones';
 import { useAlumnos } from '../../core/hooks/useAlumnos';
 import { useAlumnoForm } from '../../core/hooks/useAlumnoForm';
 
-// Formularios de registro
 import DocenteForm from '../docentes/DocenteForm';
 import MateriaForm from '../materias/MateriaForm';
 
-// Vistas de tabla
 import ListaAlumnos from './ListaAlumnos';
 import ListaDocentes from '../docentes/ListaDocentes';
 import ListaMaterias from '../materias/ListaMaterias';
@@ -24,7 +15,6 @@ import Estadisticas from '../estadisticas/Estadisticas';
 
 import './alumnos.css';
 
-// Estado vacío del formulario definido fuera del componente (es una constante)
 const INITIAL_ALUMNO = {
     nombre: '',
     apellidos: '',
@@ -38,22 +28,23 @@ const INITIAL_ALUMNO = {
 const Alumnos = () => {
     const [vista, setVista] = useState('alumnos');
 
-    // ── Capa de aplicación: estado compartido de la lista de alumnos ──
     const {
         registros,
         columnas,
         loading,
         error,
         agregarAlumno,
-        eliminarAlumno
+        recargar
     } = useAlumnos();
 
-    // ── Capa de aplicación: lógica del formulario ──
-    // Se inyecta agregarAlumno para que al guardar actualice la lista
-    const { formData, handleChange, handleSave, isValid } = useAlumnoForm(
-        INITIAL_ALUMNO,
-        agregarAlumno
-    );
+    const {
+        formData,
+        handleChange,
+        handleSave,
+        errores,
+        submitting,
+        getErrorText
+    } = useAlumnoForm(INITIAL_ALUMNO, agregarAlumno);
 
     return (
         <div className="alumnos-app-layout">
@@ -62,7 +53,6 @@ const Alumnos = () => {
             <main className="alumnos-main-viewport">
                 <div className="inner-view-card">
 
-                    {/* ── Formulario: Registro Alumno ── */}
                     {vista === 'alumnos' && (
                         <>
                             <header className="premium-form-header">
@@ -76,7 +66,7 @@ const Alumnos = () => {
                             </header>
 
                             <div className="premium-form-body">
-                                <form onSubmit={handleSave}>
+                                <form onSubmit={handleSave} noValidate>
                                     <div className="row g-3">
                                         <div className="col-6">
                                             <label className="label-modern">
@@ -85,12 +75,14 @@ const Alumnos = () => {
                                             <input
                                                 type="text"
                                                 name="nombre"
-                                                className="input-modern"
+                                                className={`input-modern ${errores.nombre ? 'input-error' : ''}`}
                                                 placeholder="Ej: Juan Carlos"
                                                 value={formData.nombre}
                                                 onChange={handleChange}
-                                                required
                                             />
+                                            {errores.nombre && (
+                                                <span className="error-text">{getErrorText('nombre')}</span>
+                                            )}
                                         </div>
 
                                         <div className="col-6">
@@ -100,12 +92,14 @@ const Alumnos = () => {
                                             <input
                                                 type="text"
                                                 name="apellidos"
-                                                className="input-modern"
+                                                className={`input-modern ${errores.apellidos ? 'input-error' : ''}`}
                                                 placeholder="Ej: Pérez González"
                                                 value={formData.apellidos}
                                                 onChange={handleChange}
-                                                required
                                             />
+                                            {errores.apellidos && (
+                                                <span className="error-text">{getErrorText('apellidos')}</span>
+                                            )}
                                         </div>
 
                                         <div className="col-6">
@@ -114,15 +108,17 @@ const Alumnos = () => {
                                             </label>
                                             <select
                                                 name="carrera"
-                                                className="select-modern"
+                                                className={`select-modern ${errores.carrera ? 'input-error' : ''}`}
                                                 value={formData.carrera}
                                                 onChange={handleChange}
-                                                required
                                             >
                                                 <option value="" disabled>Seleccione carrera</option>
                                                 <option value="Ingeniería">Ingeniería</option>
                                                 <option value="Licenciatura">Licenciatura</option>
                                             </select>
+                                            {errores.carrera && (
+                                                <span className="error-text">{getErrorText('carrera')}</span>
+                                            )}
                                         </div>
 
                                         <div className="col-6">
@@ -132,13 +128,15 @@ const Alumnos = () => {
                                             <input
                                                 type="text"
                                                 name="control"
-                                                className="input-modern"
+                                                className={`input-modern ${errores.control ? 'input-error' : ''}`}
                                                 placeholder="Ej: 22620233"
                                                 value={formData.control}
                                                 onChange={handleChange}
-                                                required
                                             />
                                             <small className="hint-modern">8 dígitos numéricos</small>
+                                            {errores.control && (
+                                                <span className="error-text">{getErrorText('control')}</span>
+                                            )}
                                         </div>
 
                                         <div className="col-6">
@@ -148,12 +146,14 @@ const Alumnos = () => {
                                             <input
                                                 type="tel"
                                                 name="telefono"
-                                                className="input-modern"
+                                                className={`input-modern ${errores.telefono ? 'input-error' : ''}`}
                                                 placeholder="Ej: 953123456"
                                                 value={formData.telefono}
                                                 onChange={handleChange}
-                                                required
                                             />
+                                            {errores.telefono && (
+                                                <span className="error-text">{getErrorText('telefono')}</span>
+                                            )}
                                         </div>
 
                                         <div className="col-6">
@@ -163,12 +163,14 @@ const Alumnos = () => {
                                             <input
                                                 type="email"
                                                 name="email"
-                                                className="input-modern"
+                                                className={`input-modern ${errores.email ? 'input-error' : ''}`}
                                                 placeholder="alumno@gmail.com"
                                                 value={formData.email}
                                                 onChange={handleChange}
-                                                required
                                             />
+                                            {errores.email && (
+                                                <span className="error-text">{getErrorText('email')}</span>
+                                            )}
                                         </div>
 
                                         <div className="col-12">
@@ -206,8 +208,8 @@ const Alumnos = () => {
                                     <div className="footer-modern">
                                         <ButtonRegister
                                             type="submit"
-                                            text="Registrar Alumno"
-                                            disabled={!isValid}
+                                            text={submitting ? 'Registrando...' : 'Registrar Alumno'}
+                                            disabled={submitting}
                                         />
                                     </div>
                                 </form>
@@ -215,20 +217,16 @@ const Alumnos = () => {
                         </>
                     )}
 
-                    {/* ── Formularios de registro: Docente y Materia ── */}
                     {vista === 'docentes' && <DocenteForm />}
                     {vista === 'materias' && <MateriaForm />}
 
-                    {/* ── Tablas de consulta ──
-                        ListaAlumnos recibe el estado compartido (registros, eliminarAlumno)
-                        para que form y tabla estén sincronizados en tiempo real.         */}
                     {vista === 'lista-alumnos' && (
                         <ListaAlumnos
                             registros={registros}
                             columnas={columnas}
                             loading={loading}
                             error={error}
-                            onEliminar={eliminarAlumno}
+                            recargar={recargar}
                         />
                     )}
                     {vista === 'lista-docentes' && <ListaDocentes />}

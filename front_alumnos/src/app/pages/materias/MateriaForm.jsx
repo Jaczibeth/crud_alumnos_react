@@ -1,87 +1,95 @@
-import { useState } from "react"
-
-import { useMaterias } from "../../core/hooks/useMaterias"
-import Boton from "../../shared/components/botones/Botones"
-import Alertas from "../../shared/components/alertas/Alertas"
+import React from "react";
+import ButtonRegister from "../../shared/components/botones/botones";
+import { useMaterias } from "../../core/hooks/useMaterias";
 
 const MateriaForm = () => {
-  const { guardarMateria, loading, initialForm } = useMaterias()
-  const [form, setForm] = useState(initialForm)
+    const { guardarMateria, form, errores, submitting, handleChange, semestres } = useMaterias();
 
-  const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value
-    })
-  }
-  const handleSubmit = async () => {
-    const res = await guardarMateria(form)
+    return (
+        <>
+            <header className="premium-form-header">
+                <div className="premium-icon-circle">
+                    <i className="bi bi-book-fill"></i>
+                </div>
+                <div className="premium-header-content">
+                    <h1>Configurar Materia</h1>
+                    <p>Complete la información para dar de alta la materia</p>
+                </div>
+            </header>
 
-    if (res.error) {
-      Alertas.error(res.error)
-    } else {
-      Alertas.success("Registro exitoso")
-      setForm(initialForm)
-    }
-  }
+            <div className="premium-form-body">
+                <form onSubmit={(e) => { e.preventDefault(); guardarMateria(); }}>
+                    <div className="row g-3">
+                        <div className="col-12">
+                            <label className="label-modern">
+                                <i className="bi bi-card-text"></i> Nombre de la Materia *
+                            </label>
+                            <input
+                                type="text"
+                                name="nombre"
+                                className={`input-modern ${errores.nombre ? 'input-error' : ''}`}
+                                placeholder="Ej: Matemáticas"
+                                value={form.nombre}
+                                onChange={handleChange}
+                            />
+                            {errores.nombre && (
+                                <span className="error-text">Nombre es obligatorio</span>
+                            )}
+                        </div>
 
-  return (
-    <>
-      <header className="premium-form-header">
-        <div className="premium-icon-circle">
-          <i className="bi bi-book-fill"></i>
-        </div>
-        <div className="premium-header-content">
-          <h1>Configurar Materia</h1>
-          <p>Complete la información para dar de alta la materia</p>
-        </div>
-      </header>
+                        <div className="col-6">
+                            <label className="label-modern">
+                                <i className="bi bi-star-fill"></i> Créditos *
+                            </label>
+                            <input
+                                type="text"
+                                name="creditos"
+                                className={`input-modern ${errores.creditos ? 'input-error' : ''}`}
+                                placeholder="1 a 5"
+                                value={form.creditos}
+                                onChange={handleChange}
+                            />
+                            {errores.creditos && (
+                                <span className="error-text">Créditos debe ser entre 1 y 5</span>
+                            )}
+                        </div>
 
-      <div className="premium-form-body">
-        <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
-          <div className="row g-3">
-            <div className="col-6">
-              <label className="label-modern">
-                <i className="bi bi-card-text"></i> Nombre de la Materia *
-              </label>
-              <input type="text" name="nombre" className="input-modern" placeholder="Ej: Matemáticas" onChange={handleChange} />
+                        <div className="col-6">
+                            <label className="label-modern">
+                                <i className="bi bi-calendar3"></i> Semestre *
+                            </label>
+                            <select
+                                name="semestre"
+                                className={`select-modern ${errores.semestre ? 'input-error' : ''}`}
+                                value={form.semestre}
+                                onChange={handleChange}
+                            >
+                                <option value="">Seleccione un semestre</option>
+                                {semestres.length > 0 ? (
+                                    semestres.map(s => (
+                                        <option key={s.id} value={s.id}>{s.nombre}</option>
+                                    ))
+                                ) : (
+                                    <option value="" disabled>No hay semestres registrados</option>
+                                )}
+                            </select>
+                            {errores.semestre && (
+                                <span className="error-text">Selecciona un semestre</span>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="footer-modern">
+                        <ButtonRegister
+                            type="submit"
+                            text={submitting ? 'Registrando...' : 'Registrar Materia'}
+                            disabled={submitting}
+                        />
+                    </div>
+                </form>
             </div>
-            <div className="col-6">
-              <label className="label-modern">
-                <i className="bi bi-upc-scan"></i> Clave de Materia *
-              </label>
-              <input type="text" name="clave" className="input-modern" placeholder="Ej: MAT-101" onChange={handleChange} />
-            </div>
-            <div className="col-6">
-              <label className="label-modern">
-                <i className="bi bi-calendar3"></i> Semestre o Grado *
-              </label>
-              <select name="semestre" className="select-modern" onChange={handleChange}>
-                <option value="">Seleccione un semestre</option>
-                {[1,2,3,4,5,6,7,8,9].map(s => (
-                  <option key={s} value={s}>{s}° Semestre</option>
-                ))}
-              </select>
-            </div>
-            <div className="col-6">
-              <label className="label-modern">
-                <i className="bi bi-person-video3"></i> Docente Asignado *
-              </label>
-              <select name="docenteId" className="select-modern" onChange={handleChange}>
-                <option value="">Seleccione al Docente</option>
-                <option value="1">Prof. Juan Carlos Pérez</option>
-                <option value="2">Profa. María González</option>
-              </select>
-            </div>
-          </div>
-          
-          <div className="footer-modern">
-            <Boton text="Registrar Materia" type="submit" loading={loading} />
-          </div>
-        </form>
-      </div>
-    </>
-  )
-}
+        </>
+    );
+};
 
-export default MateriaForm
+export default MateriaForm;

@@ -94,9 +94,6 @@
     border-bottom: 1px solid #eef0f8;
     color: #334155;
     vertical-align: middle;
-    max-width: 200px;
-    overflow: hidden;
-    text-overflow: ellipsis;
     white-space: nowrap;
 }
 
@@ -137,6 +134,19 @@
 
 .badge-default { background: #f1f5f9; color: #475569; }
 
+.tabla-img-preview {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid #e2e8f0;
+    display: block;
+}
+
+.tabla-no-img {
+    color: #cbd5e1;
+    font-size: 0.8rem;
+}
 
 .btn-accion {
     display: inline-flex;

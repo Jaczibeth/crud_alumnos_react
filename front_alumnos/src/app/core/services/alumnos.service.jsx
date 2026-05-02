@@ -1,64 +1,49 @@
-
-export const crearAlumno = async (data) => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            console.log('Alumno registrado:', data);
-            resolve({ success: true, data });
-        }, 800);
-    });
-};
-
+import api from './api';
 
 export const obtenerAlumnos = async () => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve([
-                {
-                    id: 1,
-                    nombre: 'Ana Sofía',
-                    apellidos: 'Ramírez Torres',
-                    carrera: 'Ingeniería',
-                    control: '22620001',
-                    telefono: '9531234567',
-                    email: 'ana.ramirez@estudiante.edu.mx'
-                },
-                {
-                    id: 2,
-                    nombre: 'Luis Miguel',
-                    apellidos: 'García Hernández',
-                    carrera: 'Licenciatura',
-                    control: '22620002',
-                    telefono: '9539876543',
-                    email: 'luis.garcia@estudiante.edu.mx'
-                },
-                {
-                    id: 3,
-                    nombre: 'Valeria',
-                    apellidos: 'López Mendoza',
-                    carrera: 'Ingeniería',
-                    control: '22620003',
-                    telefono: '9534561230',
-                    email: 'valeria.lopez@estudiante.edu.mx'
-                },
-                {
-                    id: 4,
-                    nombre: 'Carlos',
-                    apellidos: 'Morales Díaz',
-                    carrera: 'Licenciatura',
-                    control: '22620004',
-                    telefono: '9537890123',
-                    email: 'carlos.morales@estudiante.edu.mx'
-                },
-                {
-                    id: 5,
-                    nombre: 'Gabriela',
-                    apellidos: 'Sánchez Ruiz',
-                    carrera: 'Ingeniería',
-                    control: '22620005',
-                    telefono: '9532345678',
-                    email: 'gabriela.sanchez@estudiante.edu.mx'
-                }
-            ]);
-        }, 600);
-    });
+    const response = await api.get('/alumnos/traer-alumnos');
+    return response.data;
+};
+
+export const obtenerAlumnoPorId = async (id) => {
+    const response = await api.get(`/alumnos/traer-alumno/${id}`);
+    return response.data;
+};
+
+export const crearAlumno = async (data) => {
+    const payload = {
+        numeroControl: data.control,
+        nombre: data.nombre,
+        apellido: data.apellidos,
+        carrera: data.carrera,
+        telefono: data.telefono,
+        email: data.email,
+        imagenURL: data.urlFoto || ''
+    };
+    const response = await api.post('/alumnos/insertar-alumnos', payload);
+    return response.data;
+};
+
+export const actualizarAlumno = async (id, data) => {
+    const payload = {
+        numeroControl: data.numeroControl,
+        nombre: data.nombre,
+        apellido: data.apellido,
+        carrera: data.carrera,
+        telefono: data.telefono,
+        email: data.email,
+        imagenURL: data.imagenURL || ''
+    };
+    const response = await api.put(`/alumnos/editar-alumnos/${id}`, payload);
+    return response.data;
+};
+
+export const eliminarAlumno = async (id) => {
+    const response = await api.delete(`/alumnos/eliminar-alumnos/${id}`);
+    return response.data;
+};
+
+export const inscribirMateria = async (alumnoId, materiaId) => {
+    const response = await api.post(`/alumnos/${alumnoId}/inscribir-materia/${materiaId}`);
+    return response.data;
 };

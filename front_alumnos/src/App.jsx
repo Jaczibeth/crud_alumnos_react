@@ -10,8 +10,7 @@ function App() {
       {mostrarSplash ? (
         <Splash alTerminar={() => setMostrarSplash(false)} />
       ) : (
-        <Alumnos />
-        
+        <Alumnos key="app-loaded" />
       )}
     </>
   );
